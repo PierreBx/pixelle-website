@@ -17,13 +17,13 @@ class GristConfig {
   static String baseUrl    = "http://localhost:8484/api/docs"
 
   static class BlogPeopleTable {
-    static String tableId = "B21_PEOPLE"
+    static String tableId = "M20_PEOPLE"
     static String peopleIdColumn = "PeopleID"
   }
 
   static blogPeopleTable = new BlogPeopleTable()
 
-  static String blogMovieTableId = "B12_WORKS"
+  static String blogMovieTableId = "B10_FILMS"
 
   static fetchUniqueKeyFromGristTable(String tableId, String key, String value) {
 
@@ -42,10 +42,7 @@ class GristConfig {
 
     def json = new JsonSlurper().parse(connection.inputStream)
 
-/*    println("==> fetchUniqueKeyFromGristTable json returned: ${json.records}")
-    println("==> fetchUniqueKeyFromGristTable json returned class: ${json.records.class}")
-    println("==> fetchUniqueKeyFromGristTable json returned object: ${json.records[0]}")
-    println("==> fetchUniqueKeyFromGristTable json returned object: ${json.records[0].fields}")*/
+
 
     return json.records[0].fields
   }
@@ -130,17 +127,17 @@ class JekyllConfig {
     String front_date = movie.PostDate ? Utility.formatTimestamp(movie.PostDate) : "1972-03-07"
 
     // slug
-    String name = movie.Name ?: "untitled"
-    String front_slug = Utility.slugify(name)
+    String title = movie.Title ?: "untitled"
+    String front_slug = Utility.slugify(title)
 
     // title
-    String front_title = "${name} | film"
+    String front_title = "${title} | film"
 
     // description
     String releaseYear = movie.ReleaseYear ? Utility.getYearFromUnix(movie.ReleaseYear) : ""
     def director = gristConfig.fetchUniqueKeyFromGristTable(gristConfig.blogPeopleTable.tableId,
       gristConfig.blogPeopleTable.peopleIdColumn,
-      "${movie.Author}")
+      "${movie.Director}")
     String directorName = director.FullName
     println("==> director       ${director}")
     println("==> director name: ${directorName}")

@@ -3,7 +3,6 @@
 @Grab('ch.qos.logback:logback-classic:1.4.7')
 @GrabConfig(systemClassLoader=true)
 import groovy.util.logging.Slf4j
-
 import org.apache.commons.lang3.StringUtils
 import groovy.json.*
 import org.apache.groovy.json.internal.LazyMap
@@ -23,11 +22,11 @@ class GristConfig {
 
   static blogPeopleTable = new BlogPeopleTable()
 
-  static String blogMovieTableId = "B10_FILMS"
+  static String blogMovieTableId = "B10_BLOGPOSTS"
 
   static fetchUniqueKeyFromGristTable(String tableId, String key, String value) {
 
-    println("==> fetchUniqueKeyFromGristTable(fetching {tableId} {key} {value}  ")
+    //println("==> fetchUniqueKeyFromGristTable(fetching {tableId} {key} {value}  ")
 
     String filter = "{ \"${key}\": [ \"${value}\" ] } "
     def urlEncodedFilter = URLEncoder.encode(filter, "UTF-8")
@@ -42,7 +41,25 @@ class GristConfig {
 
     def json = new JsonSlurper().parse(connection.inputStream)
 
+    return json.records[0].fields
+  }
 
+  static fetchUniqueRecordByID(String tableId, /* String key = 'id', */ int id) {
+
+    //println("==> fetchUniqueRecordByID(fetching {tableId}  {value}  ")
+
+    String filter = "{ \"id\": [ ${id} ] } "
+    def urlEncodedFilter = URLEncoder.encode(filter, "UTF-8")
+    String url = "${baseUrl}/${docId}/tables/${tableId}/records?filter=${urlEncodedFilter}"
+
+
+    //println("==> fetchUniqueRecordByID filter: ${filter}")
+    //println("==> fetchUniqueRecordByID url: ${url}")
+
+    def connection = new URL(url).openConnection()
+    connection.setRequestProperty("Authorization", "Bearer ${apiKey}")
+
+    def json = new JsonSlurper().parse(connection.inputStream)
 
     return json.records[0].fields
   }
@@ -62,7 +79,7 @@ class GristConfig {
     // Extract the image name
     def imageName = jsonResponse.fileName
 
-    println "✅ Image name retrieved: ${imageName}"
+    //println "✅ Image name retrieved: ${imageName}"
     return imageName
   }
 
@@ -80,7 +97,7 @@ class GristConfig {
 
     File imageFile = new File(imageDir, fileName)
 
-    println "⬇ Downloading image: ${fileName} into ${imageDir}"
+    // println "⬇ Downloading image: ${fileName} into ${imageDir}"
     def url = "${baseUrl}/${docId}/attachments/${attachmentId}/download"
     def connection = new URL(url).openConnection()
     connection.setRequestProperty("Authorization", "Bearer ${apiKey}")
@@ -113,10 +130,10 @@ class JekyllConfig {
     imagesDirectory.mkdirs()
   }
 
-  static void writeMoviePosts(LazyMap record, GristConfig gristConfig) {
+  static void writeBlogPosts(LazyMap record, GristConfig gristConfig) {
 
-    def movie = record.fields
-    println("=>movie: ${movie}")
+    def blog = record.fields
+    print("   > writing blog: ${blog.Title}")
 
     // ===  FRONT MATTER VARIABLES  ===
 
@@ -124,36 +141,34 @@ class JekyllConfig {
     String front_layout = "post"
 
     // date
-    String front_date = movie.PostDate ? Utility.formatTimestamp(movie.PostDate) : "1972-03-07"
+    String front_date = blog.Date ? Utility.formatTimestamp(blog.Date) : "1972-03-07"
 
-    // slug
-    String title = movie.Title ?: "untitled"
+    // post title
+    String title = blog.Title ?: "untitled"
+
+    // post slug
     String front_slug = Utility.slugify(title)
 
-    // title
-    String front_title = "${title} | film"
+    // front title = post title | post type
+    String type = blog.Type ?: ""
+    String front_title = "${title} | ${type}" as String
 
     // description
-    String releaseYear = movie.ReleaseYear ? Utility.getYearFromUnix(movie.ReleaseYear) : ""
-    def director = gristConfig.fetchUniqueKeyFromGristTable(gristConfig.blogPeopleTable.tableId,
-      gristConfig.blogPeopleTable.peopleIdColumn,
-      "${movie.Director}")
-    String directorName = director.FullName
-    println("==> director       ${director}")
-    println("==> director name: ${directorName}")
-
-
-    String front_description = "${directorName}  (${releaseYear})"
+    String front_description =  blog.Description ?: ""
 
     // tags
-    String front_tags = "[ movie ]"
+    String front_tags = "[ tag ]"
 
     // category
-    String front_category = "[ films ]"
+    def categoryRecord = GristConfig.fetchUniqueRecordByID("A10_CATEGORIES", blog.Category)
+    def categoryName = categoryRecord.Name
+    //println("category:  ${categoryName} ")
+
+    String front_category = "[ ${categoryName} ]"
 
     // ===  POST CONTENT  ===
 
-    String content_text = movie.Text ?: ""
+    String content_text = blog.Text ?: ""
 
     // ===  POST MARKDOWN FILE CREATION  ===
 
@@ -167,7 +182,7 @@ class JekyllConfig {
 
     // === MAIN IMAGE RETRIEVING ===
 
-    int mainAttachmentId = movie.PostPicture?.get(1)
+    int mainAttachmentId = blog.Picture?.get(1)
     String imageName = gristConfig.getAttachmentName(mainAttachmentId)
     File mainImageFile = gristConfig.downloadAttachmentFromGrist(mainAttachmentId, "main-${imageName}",
       imageDir)
@@ -175,7 +190,7 @@ class JekyllConfig {
 
     // === GALLERY IMAGES RETRIEVING ===
 
-    def galleryAttachments = movie.PostGallery ?: []
+    def galleryAttachments = blog.Gallery ?: []
     galleryAttachments.eachWithIndex { galleryAttachmentId, idx ->
       if (idx > 0) {
         String galleryImageName = gristConfig.getAttachmentName(galleryAttachmentId as int)
@@ -208,7 +223,7 @@ ${post_gallery}
 
 """
 
-    println "✔ Post written (movie): ${postFile.name}"
+    println "  ✔ Post written (blog): ${postFile.name}"
   }
 
   static String addPictures(String imageDir, Boolean addPictures) {
@@ -250,7 +265,7 @@ class createPosts {
 
     def records = gristConfig.fetchRecords(GristConfig.blogMovieTableId)
 
-    records.each { jekyllConfig.writeMoviePosts(it as LazyMap, gristConfig) }
+    records.each { jekyllConfig.writeBlogPosts(it as LazyMap, gristConfig) }
   }
 
 }

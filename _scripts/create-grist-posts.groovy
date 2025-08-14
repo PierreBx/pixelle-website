@@ -184,7 +184,7 @@ class JekyllConfig {
 
     int mainAttachmentId = blog.Picture?.get(1)
     String imageName = gristConfig.getAttachmentName(mainAttachmentId)
-    File mainImageFile = gristConfig.downloadAttachmentFromGrist(mainAttachmentId, "main-${imageName}",
+    File mainImageFile = gristConfig.downloadAttachmentFromGrist(mainAttachmentId, imageName,
       imageDir)
     String front_postimagename = mainImageFile.path
 
@@ -195,7 +195,7 @@ class JekyllConfig {
       if (idx > 0) {
         String galleryImageName = gristConfig.getAttachmentName(galleryAttachmentId as int)
         gristConfig.downloadAttachmentFromGrist(galleryAttachmentId as int,
-          "gallery-${galleryImageName}" as String,
+          galleryImageName as String,
           imageDir)
       }
     }
@@ -226,26 +226,66 @@ ${post_gallery}
     println "  ✔ Post written (blog): ${postFile.name}"
   }
 
-  static String addPictures(String imageDir, Boolean addPictures) {
-
-    String result = ""
-
-    if (addPictures) {
-      def picturesDir = new File(imageDir)
-      def files = picturesDir.listFiles().sort { it.name }
-      files.each { file ->
-        result += "\n\n![text](${file.path})\n"
-        def caption = file.name.substring(0, file.name.lastIndexOf('.'))
-        if (caption[0] != '(') { // title of the file in parenthesis => do not display
-          result += "\n<div style=\"text-align: center;\"><i>${caption}</i></div>\n"
-        }
-        result += "\n<br><br>\n"
-
-      }
-      return result
-    }
-    return result
+  // Helper: tiny HTML escaper for captions
+  private static String escapeHtml(String s) {
+    if (s == null) return ""
+    s.replace("&","&amp;")
+      .replace("<","&lt;")
+      .replace(">","&gt;")
+      .replace("\"","&quot;")
+      .replace("'","&#39;")
   }
+
+// Main function
+  static String addPictures(String imageDir, Boolean addPictures) {
+    if (!addPictures) return ""
+
+    File picturesDir = new File(imageDir)
+    if (!picturesDir.isDirectory()) return ""
+
+    // Allowed image extensions (lowercase)
+    final List<String> exts = [".jpg", ".jpeg", ".png", ".webp", ".gif", ".avif"]
+
+    StringBuilder out = new StringBuilder()
+
+    // List, filter, sort
+    File[] files = picturesDir.listFiles()
+    if (files == null) return ""
+
+    files.findAll { f ->
+      f.isFile() &&
+        !f.name.startsWith(".") &&
+        exts.any { ext -> f.name.toLowerCase().endsWith(ext) } &&
+        !f.name.toLowerCase().contains("_preview")      // <-- skip previews
+    }
+      .sort { a, b -> a.name <=> b.name }
+      .each { file ->
+        // Caption = filename without extension (robust if no dot)
+        String name = file.name
+        int dot = name.lastIndexOf('.')
+        String caption = (dot > 0) ? name.substring(0, dot) : name
+
+        // Markdown image path with forward slashes (Jekyll-friendly)
+        String webPath = file.path.replace(File.separator, "/")
+
+        out.append("\n\n![text](${webPath})\n")
+
+        // If caption begins with '(', skip title (your existing rule)
+        if (caption && caption.charAt(0) != '(') {
+          // Optional prettify: underscores/dashes → spaces
+          String pretty = caption.replace('_',' ').replace('-',' ')
+          out.append("\n<div style=\"text-align: center;\"><i>")
+            .append(escapeHtml(pretty))
+            .append("</i></div>\n")
+        }
+
+        out.append("\n<br><br>\n")
+      }
+
+    return out.toString()
+  }
+
+
 
 }
 

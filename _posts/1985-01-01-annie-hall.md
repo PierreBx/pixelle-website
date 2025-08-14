@@ -4,7 +4,7 @@ date: 1985-01-01
 slug: annie-hall
 title: Annie Hall | film
 description: Woody Allen (1977)
-image: assets/media/1985-01-01-annie-hall/main-annie-hall-poster.avif
+image: assets/media/1985-01-01-annie-hall/annie-hall-poster.avif
 tags: [ tag ]
 categories: [ films ]
 
@@ -24,23 +24,44 @@ The last meeting between Annie and Alvy takes place on Manhattan's Upper West Si
 
 
 
+![text](assets/media/1985-01-01-annie-hall/annie-hall-poster.avif)
+
+<div style="text-align: center;"><i>annie hall poster</i></div>
+
+<br><br>
+
+
+![text](assets/media/1985-01-01-annie-hall/annie_hall_galery.png)
+
+<div style="text-align: center;"><i>annie hall galery</i></div>
+
+<br><br>
+
+
 ![text](assets/media/1985-01-01-annie-hall/gallery-annie_hall_galery.png)
 
-<div style="text-align: center;"><i>gallery-annie_hall_galery</i></div>
+<div style="text-align: center;"><i>gallery annie hall galery</i></div>
 
 <br><br>
 
 
 ![text](assets/media/1985-01-01-annie-hall/gallery-maxresdefault (1) (1).jpg)
 
-<div style="text-align: center;"><i>gallery-maxresdefault (1) (1)</i></div>
+<div style="text-align: center;"><i>gallery maxresdefault (1) (1)</i></div>
 
 <br><br>
 
 
 ![text](assets/media/1985-01-01-annie-hall/main-annie-hall-poster.avif)
 
-<div style="text-align: center;"><i>main-annie-hall-poster</i></div>
+<div style="text-align: center;"><i>main annie hall poster</i></div>
+
+<br><br>
+
+
+![text](assets/media/1985-01-01-annie-hall/maxresdefault (1) (1).jpg)
+
+<div style="text-align: center;"><i>maxresdefault (1) (1)</i></div>
 
 <br><br>
 

@@ -2,9 +2,9 @@
 layout: post
 date: 1989-01-01
 slug: opening-night
-title: Opening Night | fillm
+title: Opening Night | film
 description: John Cassavetes (1977)
-image: assets/media/1989-01-01-opening-night/main-images.jpg
+image: assets/media/1989-01-01-opening-night/opening-night_preview.jpg
 tags: [ tag ]
 categories: [ films ]
 
@@ -27,23 +27,23 @@ Myrtle fails to show up on time for her call on opening night. When she finally 
 
 
 
-![text](assets/media/1989-01-01-opening-night/gallery-opening-night-1977 (1).webp)
+![text](assets/media/1989-01-01-opening-night/opening-night_01.jpg)
 
-<div style="text-align: center;"><i>gallery-opening-night-1977 (1)</i></div>
-
-<br><br>
-
-
-![text](assets/media/1989-01-01-opening-night/gallery-opening_night (1).webp)
-
-<div style="text-align: center;"><i>gallery-opening_night (1)</i></div>
+<div style="text-align: center;"><i>opening night 01</i></div>
 
 <br><br>
 
 
-![text](assets/media/1989-01-01-opening-night/main-images.jpg)
+![text](assets/media/1989-01-01-opening-night/opening-night_02.jpg)
 
-<div style="text-align: center;"><i>main-images</i></div>
+<div style="text-align: center;"><i>opening night 02</i></div>
+
+<br><br>
+
+
+![text](assets/media/1989-01-01-opening-night/opening-night_03.jpg)
+
+<div style="text-align: center;"><i>opening night 03</i></div>
 
 <br><br>
 

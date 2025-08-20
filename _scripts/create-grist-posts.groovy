@@ -72,7 +72,7 @@ class GristConfig {
 
     //println("==> fetchValuesByIdList: arrayList: ${arrayList}   size: ${arrayList.size()}")
 
-    if (arrayList && arrayList.size() > 1) {
+    if (arrayList) {
 
       def values = arrayList.collect { id ->
         //print("     fetching value num: ${id}  ")
@@ -157,7 +157,7 @@ class JekyllConfig {
   static void writeBlogPosts(LazyMap record, GristConfig gristConfig) {
 
     def blog = record.fields
-    print("   > writing blog: ${blog.Title}")
+    println("  > writing blog: ${blog.Title}")
 
     // ===  FRONT MATTER VARIABLES  ===
 
@@ -183,14 +183,14 @@ class JekyllConfig {
     // category
     def categoryRecord = GristConfig.fetchUniqueRecordByID("A10_CATEGORIES", blog.Category)
     def categoryName = categoryRecord.Name
-    print(" category:  ${categoryName} ")
+    //print(" category:  ${categoryName} ")
 
     String front_category = "[ ${categoryName} ]"
 
     // tags
 
     blog.Tags.remove(0) // removes first "L"
-    println("blog.tags: ${blog.Tags} blog.tags.type : ${blog.Tags.getClass()}")
+    //println("blog.tags: ${blog.Tags} blog.tags.type : ${blog.Tags.getClass()}")
 
 
     String tags = gristConfig.fetchValuesByIdList(blog.Tags, gristConfig.blogTagTable.tableId,

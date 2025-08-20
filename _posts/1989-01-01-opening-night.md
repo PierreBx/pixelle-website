@@ -5,7 +5,7 @@ slug: opening-night
 title: Opening Night | film
 description: John Cassavetes (1977)
 image: assets/media/1989-01-01-opening-night/opening-night_preview.jpg
-tags: [ movie, opera, concert ]
+tags: [ movie ]
 categories: [ films ]
 
 ---

@@ -5,7 +5,7 @@ slug: annie-hall
 title: Annie Hall | film
 description: Woody Allen (1977)
 image: assets/media/1985-01-01-annie-hall/annie-hall-poster.avif
-tags: [ tag ]
+tags: [ movie, opera ]
 categories: [ films ]
 
 ---

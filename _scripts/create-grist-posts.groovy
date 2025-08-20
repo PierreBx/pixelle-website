@@ -3,6 +3,7 @@
 @Grab('ch.qos.logback:logback-classic:1.4.7')
 @GrabConfig(systemClassLoader=true)
 import groovy.util.logging.Slf4j
+import org.apache.commons.lang.text.StrBuilder
 import org.apache.commons.lang3.StringUtils
 import groovy.json.*
 import org.apache.groovy.json.internal.LazyMap
@@ -15,12 +16,13 @@ class GristConfig {
   static String docId    = 'rt3QMc825NvK9dQCtjHfZt'
   static String baseUrl    = "http://localhost:8484/api/docs"
 
-  static class BlogPeopleTable {
-    static String tableId = "M20_PEOPLE"
-    static String peopleIdColumn = "PeopleID"
+  static class BlogTagTable {
+    static String tableId = "A20_TAGS"
+    static String idColumn = "id"
+    static String nameColumn = "Name"
   }
 
-  static blogPeopleTable = new BlogPeopleTable()
+  static blogTagTable = new BlogTagTable()
 
   static String blogMovieTableId = "B10_BLOGPOSTS"
 
@@ -62,6 +64,28 @@ class GristConfig {
     def json = new JsonSlurper().parse(connection.inputStream)
 
     return json.records[0].fields
+  }
+
+  static String fetchValuesByIdList(arrayList, String tableId, String columnName) {
+     // arrayList : type ArrayList<Sting>
+
+
+    //println("==> fetchValuesByIdList: arrayList: ${arrayList}   size: ${arrayList.size()}")
+
+    if (arrayList && arrayList.size() > 1) {
+
+      def values = arrayList.collect { id ->
+        //print("     fetching value num: ${id}  ")
+        def fields = fetchUniqueRecordByID(tableId, id as int)
+        fields?[columnName] ?: "(unknown)"
+      }
+
+      def fvalues = values.join(", ")
+      //println("     fvalues: ${fvalues}")
+      return fvalues
+    }
+
+
   }
 
   static String getAttachmentName(int attachmentId) {
@@ -154,17 +178,23 @@ class JekyllConfig {
     String front_title = "${title} | ${type}" as String
 
     // description
-    String front_description =  blog.Description ?: ""
-
-    // tags
-    String front_tags = "[ tag ]"
+    String front_description = blog.Description ?: ""
 
     // category
     def categoryRecord = GristConfig.fetchUniqueRecordByID("A10_CATEGORIES", blog.Category)
     def categoryName = categoryRecord.Name
-    //println("category:  ${categoryName} ")
+    print(" category:  ${categoryName} ")
 
     String front_category = "[ ${categoryName} ]"
+
+    // tags
+
+    blog.Tags.remove(0) // removes first "L"
+    println("blog.tags: ${blog.Tags} blog.tags.type : ${blog.Tags.getClass()}")
+
+
+    String tags = gristConfig.fetchValuesByIdList(blog.Tags, gristConfig.blogTagTable.tableId,
+                                                             gristConfig.blogTagTable.nameColumn)
 
     // ===  POST CONTENT  ===
 
@@ -212,7 +242,7 @@ slug: ${front_slug}
 title: ${front_title}
 description: ${front_description}
 image: ${front_postimagename}
-tags: ${front_tags}
+tags: [ ${tags} ]
 categories: ${front_category}
 
 ---
@@ -284,8 +314,6 @@ ${post_gallery}
 
     return out.toString()
   }
-
-
 
 }
 

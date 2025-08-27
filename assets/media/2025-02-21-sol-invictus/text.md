@@ -1,5 +1,0 @@
-« Toujours à mi-chemin entre physicalité hip-hop et élévation classique « Sol Invictus » est une déclaration d’amour, ma déclaration d’amour à la danse. » HERVÉ KOUBI
-
-Chorégraphe d’origine algérienne (mais aussi Docteur en Pharmacie), Hervé Koubi entend ici mettre en scène, en chair et surtout en lumière, le fait que l’amour est le garant de la paix, dans un monde qui, malgré ses perfidies, recèle une force plus puissante, celle de la communion. Cette pièce généreuse, à l’énergie vitale, sera portée par seize danseuses et danseurs venus de France, d’Europe, du Brésil, d’Asie, d’Afrique du Nord et des États-Unis. Pour faire surgir la clarté au cœur des ténèbres, Hervé Koubi convoque la virtuosité, les prouesses physiques, la grâce, l’émotion, la beauté visuelle dans des chorégraphies toujours métissées, allant des danses urbaines aux danses traditionnelles. À la fin, il ne restera que l’amour… et la danse !
-
-Lumineux, généreux et universel, « Sol Invictus » est un manifeste pour la vie.

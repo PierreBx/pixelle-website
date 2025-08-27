@@ -4,7 +4,7 @@ date: 1989-01-01
 slug: opening-night
 title: Opening Night | film
 description: John Cassavetes (1977)
-image: assets/media/1989-01-01-opening-night/opening-night_preview.jpg
+image: assets/media/1989-01-01-opening-night/opening-night_preview.jpeg
 tags: [ movie ]
 categories: [ films ]
 

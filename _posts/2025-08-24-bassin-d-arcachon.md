@@ -2,8 +2,8 @@
 layout: post
 date: 2025-08-24
 slug: bassin-d-arcachon
-title: Bassin d'Arcachon | sortie en bateau
-description: 
+title: Bassin d'Arcachon | eau
+description: Sortie en bateau...
 image: assets/media/2025-08-24-bassin-d-arcachon/bassin-d-arcachon-2025_preview.jpg
 tags: [ place ]
 categories: [ events ]
@@ -12,13 +12,6 @@ categories: [ events ]
 
 Sortie au Bassin
 
-
-
-![text](assets/media/2025-08-24-bassin-d-arcachon/bassin-d-arcachon-2025_01.jpg)
-
-<div style="text-align: center;"><i>bassin d arcachon 2025 01</i></div>
-
-<br><br>
 
 
 ![text](assets/media/2025-08-24-bassin-d-arcachon/bassin-d-arcachon-2025_01.png)

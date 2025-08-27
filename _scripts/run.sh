@@ -1,6 +1,5 @@
 #!/bin/bash
 
-#PIXL_LOCAL_URL=http://127.0.0.1:4000/pixelle02/
 PIXL_LOCAL_URL=http://0.0.0.0:4000/pixelle/
 
 green_text() {
@@ -9,14 +8,16 @@ green_text() {
 
 clear
 
-echo -n cleaning posts...
-rm ./_posts/*.md
+echo -n cleaning posts and media...
+# shellcheck disable=SC1072
+rm ./_posts/*.md 2> /dev/null
+rm -rf ./assets/media/* 2> /dev/null
 green_text done!
 
-echo -n creating assets and includes files...
-cp -ru ./_data/media ./assets/
-cp -ru ./_data/media ./_includes/
-green_text done!
+#echo -n creating assets and includes files...
+#cp -ru ./_data/media ./assets/
+#cp -ru ./_data/media ./_includes/
+#green_text done!
 
 #echo creating posts from yaml database...
 #groovy ./_scripts/create_posts.groovy

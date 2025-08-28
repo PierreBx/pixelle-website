@@ -67,7 +67,7 @@ class GristConfig {
   }
 
   static String fetchValuesByIdList(arrayList, String tableId, String columnName) {
-     // arrayList : type ArrayList<Sting>
+    // arrayList : type ArrayList<Sting>
 
 
     //println("==> fetchValuesByIdList: arrayList: ${arrayList}   size: ${arrayList.size()}")
@@ -194,7 +194,7 @@ class JekyllConfig {
 
 
     String tags = gristConfig.fetchValuesByIdList(blog.Tags, gristConfig.blogTagTable.tableId,
-                                                             gristConfig.blogTagTable.nameColumn)
+      gristConfig.blogTagTable.nameColumn)
 
     // ===  POST CONTENT  ===
 

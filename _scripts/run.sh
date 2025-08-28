@@ -10,14 +10,14 @@ clear
 
 echo -n cleaning posts and media...
 # shellcheck disable=SC1072
-rm ./_posts/*.md 2> /dev/null
-rm -rf ./assets/media/* 2> /dev/null
+rm ./_posts/*.md
+rm -rf ./assets/media/*
 green_text done!
 
-#echo -n creating assets and includes files...
+echo -n retrieving logo files...
 #cp -ru ./_data/media ./assets/
-#cp -ru ./_data/media ./_includes/
-#green_text done!
+cp -ru ./_data/media/site-logo ./assets/media
+green_text done!
 
 #echo creating posts from yaml database...
 #groovy ./_scripts/create_posts.groovy

@@ -231,7 +231,7 @@ class JekyllConfig {
     }
 
     // === POST GALLERY CONTENT CREATION  ==
-    String post_gallery = addPictures(imageDir.toString(), true)
+    String post_gallery = blog.Gallery ? addPictures(imageDir.toString(), true) : ""
 
     // === FRONTMATTER ==
 

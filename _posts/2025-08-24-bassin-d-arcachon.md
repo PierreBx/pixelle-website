@@ -21,3 +21,22 @@ Sortie au Bassin
 <br><br>
 
 
+
+
+<div id="map" style="height: 400px;"></div>
+
+<script>
+    var map = L.map('map').setView([ 44.69857740202262, -1.1785898092423772 ], 13);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+      var marker = L.marker([ 44.69857740202262, -1.1785898092423772] ).addTo(map)
+    .bindPopup("Bassin d'Arcachon")
+    .openPopup();
+
+</script>
+
+
+

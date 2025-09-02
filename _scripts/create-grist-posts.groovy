@@ -21,10 +21,21 @@ class GristConfig {
     static String idColumn = "id"
     static String nameColumn = "Name"
   }
-
   static blogTagTable = new BlogTagTable()
 
-  static String blogMovieTableId = "B10_BLOGPOSTS"
+  static class BlogMainTable {
+    static String tableId = "B10_BLOGPOSTS"
+    static String idColumn = "id"
+  }
+
+  static blogMainTable = new BlogMainTable()
+
+  static class BlogPlacesTable {
+    static String tableId = "M10_PLACES"
+    static String idColumn = "id"
+  }
+
+  static blogPlacesTable = new BlogPlacesTable()
 
   static fetchUniqueKeyFromGristTable(String tableId, String key, String value) {
 
@@ -205,6 +216,21 @@ class JekyllConfig {
     String filename = "${front_date}-${front_slug}"
     File postFile = new File(postsDirectory, "${filename}.md")
 
+    // ===  POST MAP  ===
+    String post_localization_HTML = ""
+
+    if (blog.Localization) {
+      def locRecord = GristConfig.fetchUniqueRecordByID(GristConfig.blogPlacesTable.tableId, blog.Localization)
+      def locName = locRecord.Name
+      def locCoord = locRecord.Coordinates
+      post_localization_HTML = addMap(locName, locCoord)
+
+      print(" loc:  ${locName} ")
+      println(" loc:  ${locCoord} ")
+    }
+
+    //String content_map_html = blog.Map ? addMap(blog.Localization) : ""
+
     // ===  POST ASSET DIRECTORY CREATION  ===
 
     File imageDir = new File(imagesDirectory, filename)
@@ -250,6 +276,8 @@ categories: ${front_category}
 ${content_text}
 
 ${post_gallery}
+
+${post_localization_HTML}
 
 """
 
@@ -315,6 +343,34 @@ ${post_gallery}
     return out.toString()
   }
 
+  static String addMap(String text, String location)                     {   // [51.505, -0.09]
+    // 'A pretty CSS3 popup.<br> Easily customizable.'
+
+
+
+    def result =
+      """
+
+<div id="map" style="height: 400px;"></div>
+
+<script>
+    var map = L.map('map').setView([ ${location} ], 13);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+      var marker = L.marker([ ${location}] ).addTo(map)
+    .bindPopup("${text}")
+    .openPopup();
+
+</script>
+
+"""
+
+    return result
+  }
+
 }
 
 @Slf4j
@@ -331,7 +387,7 @@ class createPosts {
 
 // === MAIN EXECUTION ===
 
-    def records = gristConfig.fetchRecords(GristConfig.blogMovieTableId)
+    def records = gristConfig.fetchRecords(GristConfig.blogMainTable.tableId)
 
     records.each { jekyllConfig.writeBlogPosts(it as LazyMap, gristConfig) }
   }

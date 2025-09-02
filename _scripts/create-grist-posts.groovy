@@ -168,7 +168,7 @@ class JekyllConfig {
   static void writeBlogPosts(LazyMap record, GristConfig gristConfig) {
 
     def blog = record.fields
-    println("  > writing blog: ${blog.Title}")
+    Utility.greenText(Utility.fixLength("  > writing blog: ${blog.Title}...", 40 ))
 
     // ===  FRONT MATTER VARIABLES  ===
 
@@ -225,8 +225,7 @@ class JekyllConfig {
       def locCoord = locRecord.Coordinates
       post_localization_HTML = addMap(locName, locCoord)
 
-      print(" loc:  ${locName} ")
-      println(" loc:  ${locCoord} ")
+
     }
 
     //String content_map_html = blog.Map ? addMap(blog.Localization) : ""
@@ -281,7 +280,7 @@ ${post_localization_HTML}
 
 """
 
-    println "  ✔ Post written (blog): ${postFile.name}"
+    Utility.greenText(Utility.fixLength("  ✔ done: ${postFile.name}" , 60) + "\n")
   }
 
   // Helper: tiny HTML escaper for captions
@@ -396,6 +395,22 @@ class createPosts {
 
 @Slf4j
 class Utility {
+
+  static void greenText(String text) {
+    print("\u001B[32m${text}\u001B[0m")
+  }
+
+  static void purpleText(String text) {
+    print "\u001B[35m${text}\u001B[0m"
+  }
+
+  static String fixLength(String input, int length) {
+    input.padRight(length).substring(0, length)
+  }
+
+  static void redText(String text) {
+    print "\u001B[31m${text}\u001B[0m"
+  }
 
   static String formatTimestamp(long timestamp) {
     Date date = new Date(timestamp * 1000) // Convert seconds to milliseconds

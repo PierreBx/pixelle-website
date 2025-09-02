@@ -38,9 +38,7 @@ static String addMap(Object map)                     {   // [51.505, -0.09]
   return result
 }
 
-static String fixLength(String input, int length) {
-  input.padRight(length).substring(0, length)
-}
+
 
 static String createGoogleSearchLink(Object... keywords) {
   def baseUrl = "https://www.google.com/search?q="
@@ -49,17 +47,7 @@ static String createGoogleSearchLink(Object... keywords) {
   return "<a href=\"${url}\" target=\"_blank\">Google it</a>"
 }
 
-static void greenText(String text) {
-    println ("\u001B[32m${text}\u001B[0m")
-  }
 
-static void purpleText(String text) {
-    print "\u001B[35m${text}\u001B[0m"
-  }
-
-static void redText(String text) {
-  print "\u001B[31m${text}\u001B[0m"
-}
 
 static void createMoviePost(String key, Object value, String date, String slug) {
 

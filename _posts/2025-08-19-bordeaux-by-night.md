@@ -26,7 +26,7 @@ Chez Sébastien à Cenon
     }).addTo(map);
 
       var marker = L.marker([ 44.848412460841345, -0.5322576961795026] ).addTo(map)
-    .bindPopup("Chez Sébastien à Cenon")
+    .bindPopup("Chez Sébastien")
     .openPopup();
 
 </script>
